@@ -1,3 +1,7 @@
+# Copyright 2014 Arn-O. See the LICENSE file at the top-level directory of this
+# distribution and at
+# https://github.com/Arn-O/py-codenvy-cheatsheet/blob/master/LICENSE
+
 import webapp2
 
 from google.appengine.api import memcache
