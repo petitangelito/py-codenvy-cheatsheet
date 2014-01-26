@@ -2,11 +2,23 @@
 # distribution and at
 # https://github.com/Arn-O/py-codenvy-cheatsheet/blob/master/LICENSE
 
+import timeit
 import webapp2
 
 from google.appengine.api import memcache
 
 MEMCACHE_VAR_KEY = 'cached_variable'
+
+def get_divisors(number):
+    '''Compute the divisors and the duration time (ms).'''
+    start_time = timeit.default_timer()
+    divisors = []
+    for i in range(1, int(number/2) ):
+        if not number%i:
+            divisors.append(i)
+    end_time = timeit.default_timer() 
+    duration = (end_time - start_time) * 1000
+    return divisors, duration
 
 class MainPage(webapp2.RequestHandler):
   
@@ -26,6 +38,16 @@ class Stone1(webapp2.RequestHandler):
     self.response.headers['Content-Type'] = 'text/plain'
     self.response.write(output_str)    
 
+class Stone2(webapp2.RequestHandler):
+  
+  def get(self):
+    divisors, duration = get_divisors(10000)
+    output_str = str(divisors) + '\n'
+    output_str += 'Total computation time: ' + str(duration) + ' ms'
+    self.response.headers['Content-Type'] = 'text/plain'
+    self.response.write(output_str)    
+
+    
 #class Stone3(webapp2.RequestHandler):
 
 #  def get(self):  
@@ -43,5 +65,5 @@ class Stone1(webapp2.RequestHandler):
 application = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/stone1', Stone1),
-#    ('/stone3', Stone3),
+    ('/stone2', Stone2),
   ], debug=True)

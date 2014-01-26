@@ -8,6 +8,7 @@ Challenges:
 + no print
 + a lot of OOP
 + data retention
++ module
 + threating
 
 Use PAAS
@@ -18,10 +19,17 @@ Stone 0: "hello world!"
 
 Stone 1: "bonjour le monde!"
 
-Stone 2: simple loop
+Stone 2: first program
 
-Stone 3: data retention
+Use standard Python module
+use str to cast as an integer + improve display
 
-Stone 4: loop step-by-step
+Stone 3: simple loop
 
-Stone 5: threaded loop
+Stone 4: data retention
+
+Stone 5: loop step-by-step
+
+Stone 6: threaded loop (queue?)
+
+Stone 7: backend
