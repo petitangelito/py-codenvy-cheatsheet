@@ -7,7 +7,9 @@ This project is a tutorial for coding with the cloud based IDE Codenvy and Googl
 
 ## Motivation
 
-I am clearly a fan of Vim and I use a lot it to code in Python. This is a great tool. Unfortunately, that means that I cannot easily code when I am far from my Linux box.
+I am clearly a fan of Vim and I use it a lot to code in Python. This is a great tool. Unfortunately, that means that I cannot easily code when I am far from my Linux box. So I have investigated online IDE.
+
+With Codenvy, you can code in Python. You cannot develop like on your laptop, the code has to be managed in a web framework. You can code whatever your want, you just have to take care of the user interface.
 
 ## Challenges
 
