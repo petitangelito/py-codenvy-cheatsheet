@@ -7,18 +7,19 @@ import webapp2
 
 from google.appengine.api import memcache
 
-MEMCACHE_VAR_KEY = 'cached_variable'
+MEMCACHE_I_KEY = 'cached_i'
+MEMCACHE_DIVISORS_KEY = 'cached_divisors'
 
 def get_divisors(number):
-    '''Compute the divisors and the duration time (ms).'''
-    start_time = timeit.default_timer()
-    divisors = []
-    for i in range(1, int(number/2) ):
-        if not number%i:
-            divisors.append(i)
-    end_time = timeit.default_timer() 
-    duration = (end_time - start_time) * 1000
-    return divisors, duration
+  '''Compute the divisors and the duration time (ms).'''
+  start_time = timeit.default_timer()
+  divisors = []
+  for i in range(1, int(number/2) + 1):
+    if not number%i:
+      divisors.append(i)
+  end_time = timeit.default_timer() 
+  duration = (end_time - start_time) * 1000
+  return divisors, duration
 
 class MainPage(webapp2.RequestHandler):
   
@@ -47,23 +48,35 @@ class Stone2(webapp2.RequestHandler):
     self.response.headers['Content-Type'] = 'text/plain'
     self.response.write(output_str)    
 
-    
-#class Stone3(webapp2.RequestHandler):
-
-#  def get(self):  
-#    some_variable = memcache.get(MEMCACHE_VAR_KEY)
-#    if some_variable is None:
-#      output_str = 'Not initialized yet'
-#      memcache.set(MEMCACHE_VAR_KEY, 0)
-#    else:
-#      output_str = 'Variable value: %s' % str(some_variable)
-#      some_variable += 1
-#      memcache.set(MEMCACHE_VAR_KEY, some_variable)
-#    self.response.headers['Content-Type'] = 'text/plain'
-#    self.response.write(output_str)  
+class Stone3(webapp2.RequestHandler):
+  
+  def get(self):
+    number = 1000
+    i = memcache.get(MEMCACHE_I_KEY)
+    divisors = memcache.get(MEMCACHE_DIVISORS_KEY)
+    if i is None:
+      i = 1
+      divisors = []
+    output_str = 'Number to divide: ' + str(number) + '\n'
+    output_str += 'Iteration: ' + str(i) + ' - '
+    if not number%i:
+      output_str += 'New divisor found!' + '\n'
+      divisors.append(i)
+    else:
+      output_str += 'This is not a divisor' + '\n'
+    output_str += str(divisors) + '\n'
+    if i <  (int(number/2) + 1):
+      i += 1
+    else:
+      output_str += 'Last iteration' + '\n'
+    memcache.set(MEMCACHE_I_KEY, i)
+    memcache.set(MEMCACHE_DIVISORS_KEY, divisors)
+    self.response.headers['Content-Type'] = 'text/plain'
+    self.response.write(output_str)  
     
 application = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/stone1', Stone1),
     ('/stone2', Stone2),
+    ('/stone3', Stone3),
   ], debug=True)
