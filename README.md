@@ -27,6 +27,10 @@ Python developper google
 
 ## Using a PaaS
 
+So do not bother, use one directly.
+
+As fast to deploy and test on Google App than to test on Codenvy. Google App far much faster. Logs are available.
+
 ### Performance
 
 ### Pricing
