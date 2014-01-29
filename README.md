@@ -40,16 +40,12 @@ Python developper google
 Use standard Python module
 use str to cast as an integer + improve display
 
-## Stone 3: simple loop
+## Stone 3: loop step-by-step (data retention)
 
-## Stone 4: data retention
+## Stone 4: log
 
-## Stone 5: loop step-by-step
+## Stone 5: threaded loop (queue?)
 
-## Stone 6: log
-
-## Stone 7: threaded loop (queue?)
-
-## Stone 8: backend
+## Stone 6: backend
 
 [paas]: http://en.wikipedia.org/wiki/Platform_as_a_service
