@@ -4,24 +4,35 @@
 
 import logging
 import timeit
+import time
 import webapp2
 
 from google.appengine.api import memcache
+from google.appengine.api import taskqueue
 
 MEMCACHE_I_KEY = 'cached_i'
 MEMCACHE_DIVISORS_KEY = 'cached_divisors'
 
 def get_divisors(number):
   '''Compute the divisors and the duration time (ms).'''
-  start_time = timeit.default_timer()
+  time_start = timeit.default_timer()
   divisors = []
   for i in range(1, int(number/2) + 1):
     if not number%i:
       divisors.append(i)
-  end_time = timeit.default_timer() 
-  duration = (end_time - start_time) * 1000
+  time_end = timeit.default_timer() 
+  duration = (time_end - time_start) * 1000
   return divisors, duration
 
+class DivisorWorker(webapp2.RequestHandler):
+  
+  def post(self):
+    logging.getLogger().setLevel(logging.INFO)
+    divisors, duration = get_divisors(10000000)
+    logging.info('Divisors: %s', str(divisors))
+    logging.info('Duration: %s ms', str(duration))
+    logging.getLogger().setLevel(logging.WARNING)
+        
 class MainPage(webapp2.RequestHandler):
   
   def get(self):
@@ -89,6 +100,14 @@ class Stone4(webapp2.RequestHandler):
     logging.getLogger().setLevel(logging.WARNING)
     self.response.headers['Content-Type'] = 'text/plain'
     self.response.write(output_str)  
+
+class Stone5(webapp2.RequestHandler):
+  
+  def get(self):
+    taskqueue.add(url='/divisorworker')
+    output_str = 'Task added, check the Administration Console'
+    self.response.headers['Content-Type'] = 'text/plain'
+    self.response.write(output_str)
     
 application = webapp2.WSGIApplication([
     ('/', MainPage),
@@ -96,4 +115,6 @@ application = webapp2.WSGIApplication([
     ('/stone2', Stone2),
     ('/stone3', Stone3),
     ('/stone4', Stone4),
+    ('/stone5', Stone5),
+    ('/divisorworker', DivisorWorker),
   ], debug=True)
